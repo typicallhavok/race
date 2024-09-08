@@ -54,6 +54,63 @@ const Scene = () => {
             }}
         >
             <style>{keyframes}</style>
+            {!gameOver && (
+                <div
+                    style={{
+                        zIndex: "2",
+                        display: "flex",
+                        flexDirection: "column",
+                        position: "absolute",
+                        left: "10%",
+                        top: "10%",
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "1.5rem",
+                        }}
+                    >
+                        <img src="/img/wKey.png" width={50} height={50} />
+                        move front
+                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "1.5rem",
+                        }}
+                    >
+                        <img src="/img/sKey.png" width={50} height={50} />
+                        move back
+                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "1.5rem",
+                        }}
+                    >
+                        <img src="/img/arrow.png" width={50} height={50} />
+                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "1.5rem",
+                        }}
+                    >
+                        <img
+                            style={{ transform: "rotate(-45deg)" }}
+                            src="/img/mouse.png"
+                            width={50}
+                            height={50}
+                        />
+                        move sideways
+                    </div>
+                </div>
+            )}
             {!start && (
                 <div
                     style={{
@@ -79,10 +136,10 @@ const Scene = () => {
                     style={{
                         position: "absolute",
                         top: "10%",
-                        left: "10%",
+                        left: "70%",
                         fontFamily: "helvetica",
                         zIndex: "2",
-                        color: "#e79aff",
+                        color: "#b148d2",
                         fontSize: "5rem",
                         fontWeight: "bold",
                     }}
@@ -94,10 +151,10 @@ const Scene = () => {
                     style={{
                         position: "absolute",
                         top: "10%",
-                        left: "10%",
+                        left: "70%",
                         fontFamily: "helvetica",
                         zIndex: "2",
-                        color: "#e79aff",
+                        color: "#b148d2",
                         fontSize: "5rem",
                     }}
                 >
