@@ -11,8 +11,8 @@ const FallingBodies = ({
     score,
 }) => {
     const [bodies, setBodies] = useState([]);
-    const maxBodies = 100;
-    const spawnInterval = 2000;
+    const maxBodies = 200;
+    const spawnInterval = 1000;
 
     useEffect(() => {
         if (start) {
