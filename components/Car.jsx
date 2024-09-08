@@ -7,7 +7,7 @@ import {
 import { useRef, useEffect, useState } from "react";
 import { Vector3 } from "three";
 
-const Car = ({ chassis, setCarPosition,start,setStart }) => {
+const Car = ({ chassis, setCarPosition, start, setStart }) => {
     const carRef = useRef(null);
     const wheelBL = useRef(null);
     const wheelBR = useRef(null);
@@ -27,7 +27,7 @@ const Car = ({ chassis, setCarPosition,start,setStart }) => {
     ]);
 
     useSphericalJoint(chassis, wheelF, [
-        [0, 0, -.8],
+        [0, 0, -0.8],
         [0, 0, 0],
     ]);
 
@@ -36,7 +36,6 @@ const Car = ({ chassis, setCarPosition,start,setStart }) => {
     };
 
     useEffect(() => {
-
         window.addEventListener("click", handleClick);
 
         return () => {
@@ -82,18 +81,18 @@ const Car = ({ chassis, setCarPosition,start,setStart }) => {
     useFrame(() => {
         const chassisBody = chassis.current;
         const wheelFbody = wheelF.current;
-        if (start&&chassisBody) {
-            const forwardForceMagnitude = .008;
+        if (start && chassisBody) {
+            const forwardForceMagnitude = 0.008;
 
             const forwardForce = new Vector3(
                 0,
                 0,
-                -forwardForceMagnitude * speed 
+                -forwardForceMagnitude * speed
             );
             chassisBody.applyImpulse(forwardForce, true);
 
             const sidewaysForce = new Vector3(
-                mouseX * forwardForceMagnitude*5,
+                mouseX * forwardForceMagnitude * 5,
                 0,
                 0
             );

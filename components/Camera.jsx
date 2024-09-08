@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useThree, useFrame } from '@react-three/fiber';
+import React, { useEffect, useRef } from "react";
+import { useThree, useFrame } from "@react-three/fiber";
 
 const Camera = ({ chassisRef }) => {
     const { camera } = useThree();
@@ -15,8 +15,7 @@ const Camera = ({ chassisRef }) => {
 
     useEffect(() => {
         if (ref.current) {
-
-            ref.current.position.set(0, 5, 10); 
+            ref.current.position.set(0, 5, 10);
             ref.current.lookAt(0, 0, 0);
         }
     }, []);

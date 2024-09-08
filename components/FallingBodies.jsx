@@ -14,7 +14,6 @@ const FallingBodies = ({
     const maxBodies = 100;
     const spawnInterval = 2000;
 
-
     useEffect(() => {
         if (start) {
             const intervalId = setInterval(() => {
