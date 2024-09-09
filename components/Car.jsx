@@ -82,7 +82,7 @@ const Car = ({ chassis, setCarPosition, start, setStart }) => {
         const chassisBody = chassis.current;
         const wheelFbody = wheelF.current;
         if (start && chassisBody) {
-            const forwardForceMagnitude = 0.008;
+            const forwardForceMagnitude = 0.02;
 
             const forwardForce = new Vector3(
                 0,
