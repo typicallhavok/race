@@ -38,7 +38,7 @@ const Scene = () => {
       `;
 
     useEffect(() => {
-        if ((Math.abs(carPosition[0]) >= 15)||Math.abs(carPosition[1]>1)) {
+        if ((Math.abs(carPosition[0]) >= 15)||(carPosition[1]<-.5)) {
             setGameOver(1);
             setOutOfBounds(1);
         }
