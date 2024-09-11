@@ -64,10 +64,10 @@ const Car = ({ chassis, setCarPosition, start, setStart }) => {
         const handleKeyDown = (event) => {
             switch (event.key) {
                 case "w":
-                    setSpeed((prev) => Math.min(prev + 0.1, 3));
+                    setSpeed((prev) => Math.min(prev + 4, 3));
                     break;
                 case "s":
-                    setSpeed((prev) => Math.max(prev - 0.1, 0));
+                    setSpeed((prev) => Math.max(prev - 5, 0));
                     break;
                 default:
                     break;
@@ -79,77 +79,65 @@ const Car = ({ chassis, setCarPosition, start, setStart }) => {
     }, []);
 
     useFrame(() => {
-        const chassisBody = chassis.current;
-        const wheelFbody = wheelF.current;
-        if (start && chassisBody) {
-            const forwardForceMagnitude = 0.02;
+    const chassisBody = chassis.current;
+    const wheelFbody = wheelF.current;
 
-            const forwardForce = new Vector3(
-                0,
-                0,
-                -forwardForceMagnitude * speed
-            );
-            chassisBody.applyImpulse(forwardForce, true);
+    if (start && chassisBody && wheelFbody) {
+        const forwardForceMagnitude = 0.1;
 
-            const sidewaysForce = new Vector3(
-                mouseX * forwardForceMagnitude * 5,
-                0,
-                0
-            );
-            wheelFbody.applyImpulse(sidewaysForce, true);
+        let forwardForce = new Vector3(0, 0, -forwardForceMagnitude * speed);
+        
+        const chassisRotation = chassisBody.rotation();
+        forwardForce = forwardForce.applyEuler(chassisRotation);
 
-            const velocity = chassisBody.linvel();
-            const currentSpeed = Math.sqrt(velocity.x ** 2 + velocity.z ** 2);
+        chassisBody.applyImpulse(forwardForce, true);
 
-            if (currentSpeed > 5) {
-                const normalizedVelocity = {
-                    x: (velocity.x / currentSpeed) * 8,
-                    y: 0,
-                    z: (velocity.z / currentSpeed) * 8,
-                };
-                chassisBody.setLinvel(normalizedVelocity, true);
-            }
+        let sidewaysForce = new Vector3(mouseX * forwardForceMagnitude *.6, 0, 0);
+        sidewaysForce = sidewaysForce.applyEuler(chassisRotation);
+        wheelFbody.applyImpulse(sidewaysForce, true);
 
-            const angVel = chassisBody.angvel();
-            const maxAngVel = Math.PI / 6;
-            if (Math.abs(angVel.x) > maxAngVel) {
-                chassisBody.setAngvel(
-                    {
-                        x: maxAngVel * Math.sign(angVel.x),
-                        y: angVel.y,
-                        z: angVel.z,
-                    },
-                    true
-                );
-            }
-            if (Math.abs(angVel.z) > maxAngVel) {
-                chassisBody.setAngvel(
-                    {
-                        x: angVel.x,
-                        y: angVel.y,
-                        z: maxAngVel * Math.sign(angVel.z),
-                    },
-                    true
-                );
-            }
+        const velocity = chassisBody.linvel();
+        const currentSpeed = Math.sqrt(velocity.x ** 2 + velocity.z ** 2);
 
-            if (wheelF.current) {
-                const wheel = wheelF.current;
-                const steeringAngle = Math.min(
-                    Math.max((mouseX * Math.PI) / 6, -Math.PI / 3),
-                    Math.PI / 3
-                );
-                wheel.setRotation({ x: 0, y: steeringAngle, z: 0 });
-            }
+        if (currentSpeed > 8) {
+            const normalizedVelocity = {
+                x: (velocity.x / currentSpeed) * 8,
+                y: 0,
+                z: (velocity.z / currentSpeed) * 8,
+            };
+            chassisBody.setLinvel(normalizedVelocity, true);
         }
-    });
+
+        const angVel = chassisBody.angvel();
+        const maxAngVel = Math.PI / 6;
+
+        if (Math.abs(angVel.x) > maxAngVel || Math.abs(angVel.z) > maxAngVel) {
+            chassisBody.setAngvel(
+                {
+                    x: Math.min(Math.max(angVel.x, -maxAngVel), maxAngVel),
+                    y: angVel.y,
+                    z: Math.min(Math.max(angVel.z, -maxAngVel), maxAngVel),
+                },
+                true
+            );
+        }
+
+        const steeringAngle = Math.min(
+            Math.max((mouseX * Math.PI) / 6, -Math.PI / 3),
+            Math.PI / 3
+        );
+        wheelFbody.setRotation({ x: 0, y: steeringAngle, z: 0 });
+    }
+});
+
+    
 
     return (
         <group ref={carRef}>
             <RigidBody
                 ref={chassis}
                 position={[0, 0.4, 0]}
-                mass={10}
+                mass={100}
                 linearDamping={0.5}
                 angularDamping={0.5}
                 friction={1}
@@ -164,7 +152,7 @@ const Car = ({ chassis, setCarPosition, start, setStart }) => {
             <RigidBody
                 ref={wheelBR}
                 position={[0.6, 0.2, 0.6]}
-                mass={5}
+                mass={10}
                 linearDamping={0.8}
                 angularDamping={0.8}
                 friction={1}
@@ -180,7 +168,7 @@ const Car = ({ chassis, setCarPosition, start, setStart }) => {
             <RigidBody
                 ref={wheelBL}
                 position={[-1.2, 0.2, 0.6]}
-                mass={5}
+                mass={10}
                 linearDamping={0.8}
                 angularDamping={0.8}
                 friction={1}
@@ -196,7 +184,7 @@ const Car = ({ chassis, setCarPosition, start, setStart }) => {
             <RigidBody
                 ref={wheelF}
                 position={[0, 0.5, -0.4]}
-                mass={50}
+                mass={100}
                 friction={1}
                 restitution={0}
                 colliders="ball"

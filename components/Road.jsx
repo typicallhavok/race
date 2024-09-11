@@ -1,8 +1,14 @@
 import { useRef, useState } from "react";
 import { RigidBody } from "@react-three/rapier";
-import { useFrame } from "@react-three/fiber";
+import { useFrame,useLoader } from "@react-three/fiber";
+import { TextureLoader } from 'three';
+
+
 
 const Road = ({ carPosition }) => {
+const roadTexture = useLoader(TextureLoader, '/img/road-texture.jpg');
+
+
     const roadRef = useRef(null);
     const [roadLength, setRoadLength] = useState(1000);
 
@@ -27,7 +33,7 @@ const Road = ({ carPosition }) => {
         >
             <mesh ref={roadRef} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
                 <planeGeometry args={[20, roadLength, 800, 800]} />
-                <meshStandardMaterial color="gray" />
+                <meshStandardMaterial map={roadTexture}/>
             </mesh>
         </RigidBody>
     );
